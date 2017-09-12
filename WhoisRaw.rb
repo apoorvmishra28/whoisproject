@@ -40,22 +40,32 @@ puts p.domain
 
 counter = 0
 whoislist = ''
+executionDateTime = []
 r.parts.each do|a|
 
+parser = Whois::Parser.new(r)
+
+executionDateTime << parser.created_on.to_s
+executionDateTime << parser.updated_on.to_s
+executionDateTime << parser.expires_on.to_s
+
+# executionDateTime = "#{parser.created_on}" + "\n" + "#{parser.updated_on}" + "\n" + "#{parser.expires_on}"
 
 # =>   puts r
 # =>  puts a
 
 
-whoislist = r.parts[counter].host + "\n" + whoislist
+whoislist = r.parts[counter].host + "\n" + whoislist + "\n" 
 
 nomefile = '/home/nsds/Desktop/whois/' + Folder + '/' + Key + '.' + (counter + 1).to_s + '.txt'
 # =>   puts nomefile 
-File.write(nomefile, r.parts[counter].body )
+File.write(nomefile, r.parts[counter].body)
 
 counter = counter + 1
 
 
 end
+
+whoislist = whoislist + executionDateTime.uniq.to_s
 
 File.write('/home/nsds/Desktop/whois/' + Folder + '/' + Key + '.0.txt', whoislist)

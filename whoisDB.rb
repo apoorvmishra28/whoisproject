@@ -10,8 +10,13 @@ record = Whois.whois(Domain)
 parser = Whois::Parser.new(record)
 # created whois-parser object which is further used for parsing whois informaition
 
-puts parser.domain
+ 
+puts parser.created_on
+puts parser.updated_on
+puts parser.expires_on
+
 
 parser.nameservers.each do |nameserver|
   puts nameserver
 end
+
