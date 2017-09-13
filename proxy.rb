@@ -2,7 +2,7 @@ require 'net/http'
 
 
 
-uri = URI('http://example.com/index.html')
+uri = URI('http://whois.nic.it')
 res = Net::HTTP.get_response(uri)
 
 # Headers
@@ -20,22 +20,3 @@ puts res.class.name # => 'HTTPOK'
 puts res.body
 
 
-def fetch(uri_str, limit = 10)
-  # You should choose a better exception.
-  raise ArgumentError, 'too many HTTP redirects' if limit == 0
-
-  response = Net::HTTP.get_response(URI(uri_str))
-
-  case response
-  when Net::HTTPSuccess then
-    puts response
-  when Net::HTTPRedirection then
-    location = response['location']
-    warn "redirected to #{location}"
-    fetch(location, limit - 1)
-  else
-    response.value
-  end
-end
-
-print fetch('http://www.ruby-lang.org')
